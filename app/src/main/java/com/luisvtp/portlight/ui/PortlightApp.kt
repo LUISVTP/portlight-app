@@ -63,7 +63,7 @@ fun PortlightApp(
                 }
             }
             composable(Routes.LEGAL) {
-                LegalScreen(onBack = { navController.popBackStack() })
+                LegalScreen(ports = catalog.ports, onBack = { navController.popBackStack() })
             }
         }
     }

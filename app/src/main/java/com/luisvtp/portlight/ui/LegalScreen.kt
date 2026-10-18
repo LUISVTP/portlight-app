@@ -1,5 +1,6 @@
 package com.luisvtp.portlight.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,15 +25,24 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.luisvtp.portlight.R
+import com.luisvtp.portlight.data.Port
+import com.luisvtp.portlight.domain.catalogCredits
 
-/** Pantalla legal: texto aprobado en los dos idiomas (values/ y values-es/). */
+/**
+ * Pantalla legal: texto aprobado en los dos idiomas (values/ y values-es/) y
+ * créditos derivados del catálogo (Fase 4): cada port listado cita a su autor,
+ * su licencia y enlaza a su repositorio original.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LegalScreen(
+    ports: List<Port>,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -80,6 +90,38 @@ fun LegalScreen(
                     )
                 }
             }
+
+            // Créditos derivados del catálogo (Fase 4): nada escrito a mano.
+            val credits = catalogCredits(ports)
+            if (credits.isNotEmpty()) {
+                val uriHandler = LocalUriHandler.current
+                Text(
+                    stringResource(R.string.legal_credits_title),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    stringResource(R.string.legal_credits_intro),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                credits.forEach { credit ->
+                    Text(
+                        stringResource(
+                            R.string.legal_credit_line,
+                            credit.portName,
+                            credit.authorName,
+                            credit.license,
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable { uriHandler.openUri(credit.url) },
+                    )
+                }
+                Text(
+                    stringResource(R.string.legal_not_affiliated),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
@@ -89,6 +131,6 @@ fun LegalScreen(
 @Composable
 private fun LegalScreenPreview() {
     MaterialTheme {
-        LegalScreen(onBack = {})
+        LegalScreen(ports = PreviewData.ports, onBack = {})
     }
 }
