@@ -6,6 +6,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.luisvtp.portlight.R
+import com.luisvtp.portlight.domain.formatBytes
 import com.luisvtp.portlight.install.UiInstallConfirmer
 
 /**
@@ -41,8 +42,15 @@ fun InstallDialogs(confirmer: UiInstallConfirmer) {
 
 @Composable
 private fun dialogBody(request: UiInstallConfirmer.Request): String = when (request.kind) {
-    UiInstallConfirmer.Kind.OWN_COPY ->
-        stringResource(R.string.dialog_own_copy_body, request.portName)
+    UiInstallConfirmer.Kind.OWN_COPY -> {
+        // Fase 4: tamaño del APK y recomendación de Wi-Fi junto al aviso legal.
+        val sizeLine = request.sizeBytes?.let { stringResource(R.string.download_size, formatBytes(it)) }
+        listOfNotNull(
+            stringResource(R.string.dialog_own_copy_body, request.portName),
+            sizeLine,
+            stringResource(R.string.download_wifi_recommendation),
+        ).joinToString("\n\n")
+    }
     UiInstallConfirmer.Kind.MISSING_DIGEST ->
         stringResource(R.string.dialog_missing_digest_body, request.portName)
     UiInstallConfirmer.Kind.SIGNATURE_CHANGED -> stringResource(

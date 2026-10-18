@@ -12,6 +12,7 @@ import android.provider.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.luisvtp.portlight.data.Port
+import com.luisvtp.portlight.domain.AbiSelector
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
@@ -33,6 +34,8 @@ class UiInstallConfirmer(private val app: Application) : InstallConfirmer {
         val kind: Kind,
         val portName: String,
         val fingerprint: String? = null,
+        /** Tamaño del APK que se va a descargar (diálogo OWN_COPY, Fase 4). */
+        val sizeBytes: Long? = null,
     )
 
     /** Estado observable: `InstallDialogs` muestra el diálogo de la petición activa. */
@@ -68,8 +71,17 @@ class UiInstallConfirmer(private val app: Application) : InstallConfirmer {
         })
     }
 
-    override fun confirmOwnCopy(port: Port): Boolean =
-        ask(Request(Kind.OWN_COPY, port.name))
+    /**
+     * El diálogo de descarga muestra el tamaño del APK que SE va a descargar:
+     * se reutiliza la selección determinista de ABI de [AbiSelector] (la misma
+     * que después usará [com.luisvtp.portlight.install.InstallFlow]). El aviso
+     * legal sigue siendo el primer paso del usuario antes de cualquier descarga.
+     */
+    override fun confirmOwnCopy(port: Port): Boolean {
+        val selected = AbiSelector.select(port, Build.SUPPORTED_ABIS.toList())
+            as? AbiSelector.Selection.Selected
+        return ask(Request(Kind.OWN_COPY, port.name, sizeBytes = selected?.asset?.size))
+    }
 
     override fun confirmMissingDigest(port: Port): Boolean =
         ask(Request(Kind.MISSING_DIGEST, port.name))
