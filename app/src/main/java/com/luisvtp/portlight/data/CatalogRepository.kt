@@ -16,12 +16,21 @@ class CatalogRepository(private val embeddedJson: String) {
             ?: error("El catálogo embebido no valida contra el esquema"),
     )
 
-    /** Catálogo vigente: la caché privada si valida; si no, la instantánea embebida. */
-    fun currentCatalog(cacheStore: CatalogCacheStore): Catalog =
-        cacheStore.readJson()
+    /**
+     * Catálogo vigente: entre la caché privada (si valida) y la instantánea
+     * embebida se elige el de `generated_at` más reciente; a igual fecha (o
+     * sin fechas) manda la caché. Si la caché no valida, la embebida.
+     */
+    fun currentCatalog(cacheStore: CatalogCacheStore): Catalog {
+        val cached = cacheStore.readJson()
             ?.let { CatalogJson.parseOrNull(it) }
             ?.let { filterForPolicy(it) }
-            ?: loadCatalog()
+        val embedded = loadCatalog()
+        if (cached == null) return embedded
+        val cachedAt = CatalogDates.parseEpochMillis(cached.generatedAt) ?: Long.MIN_VALUE
+        val embeddedAt = CatalogDates.parseEpochMillis(embedded.generatedAt) ?: Long.MIN_VALUE
+        return if (cachedAt >= embeddedAt) cached else embedded
+    }
 
     /** Política del catálogo: copia propia del juego y sin assets alojados. */
     private fun filterForPolicy(catalog: Catalog): Catalog = catalog.copy(
