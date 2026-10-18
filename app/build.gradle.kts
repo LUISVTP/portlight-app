@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -11,8 +13,8 @@ android {
         applicationId = "com.luisvtp.portlight"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
     }
 
     compileOptions {
@@ -24,6 +26,10 @@ android {
         jvmTarget = "17"
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     lint {
         abortOnError = true
         checkReleaseBuilds = true
@@ -33,5 +39,18 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(libs.activity.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    implementation(libs.kotlinx.serialization.json)
+
+    debugImplementation(libs.ui.tooling)
+
     testImplementation(libs.junit)
+
+    // Detector Lint propio (texto hardcodeado en Compose), severidad error
+    lintPublish(project(":lint-rules"))
 }
