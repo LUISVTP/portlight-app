@@ -17,7 +17,8 @@ object CatalogUrls {
     const val FALLBACK_CATALOG_URL =
         "https://raw.githubusercontent.com/LUISVTP/portlight-catalog/main/catalog.json"
 
-    private val ALLOWED_HOSTS = setOf("luisvtp.github.io", "raw.githubusercontent.com")
+    /** Hosts permitidos (refresco y redirecciones del catálogo). */
+    val ALLOWED_HOSTS: Set<String> = setOf("luisvtp.github.io", "raw.githubusercontent.com")
 
     /** true si [url] es HTTPS y su host está en la lista blanca. */
     fun isAllowed(url: String): Boolean = try {

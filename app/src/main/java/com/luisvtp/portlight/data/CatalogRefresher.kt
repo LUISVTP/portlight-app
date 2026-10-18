@@ -55,6 +55,7 @@ class CatalogRefresher(
         is CatalogHttpResponse.HttpError,
         CatalogHttpResponse.IOError,
         CatalogHttpResponse.RejectedByPolicy,
+        CatalogHttpResponse.RedirectDenied,
         -> null
     }
 }
