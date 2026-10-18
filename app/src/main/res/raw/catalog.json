@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-17T00:00:00Z",
+  "ports": [
+    {
+      "id": "cubiq-quest-port",
+      "name": "Cubiq Quest Port (demo)",
+      "description": {
+        "es": "Port de demostración de un puzzle completamente ficticio. Requiere tu propia copia del juego original. Esta entrada no corresponde a ningún juego ni repositorio real.",
+        "en": "Demonstration port of a fully fictional puzzle game. Requires your own copy of the original game. This entry does not correspond to any real game or repository."
+      },
+      "author": { "name": "Autor de ejemplo", "contact": "https://github.com/example" },
+      "license": "GPL-3.0-only",
+      "repo": "example/cubiq-quest-port",
+      "asset_pattern": "(?i)^.*-universal\\.apk$",
+      "requires_user_game": true,
+      "no_game_assets": true,
+      "source_url": "https://github.com/example/cubiq-quest-port",
+      "screenshots": ["https://example.com/screenshots/cubiq-quest-1.png"],
+      "package": "com.example.cubiqquest",
+      "category": "puzzle"
+    },
+    {
+      "id": "neon-drift-port",
+      "name": "Neon Drift Port (demo)",
+      "description": {
+        "es": "Port de demostración de una carrera completamente ficticia. Requiere tu propia copia del juego original. Esta entrada solo tiene versión en español para demostrar el alternado de idiomas del catálogo."
+      },
+      "author": { "name": "Autora de ejemplo" },
+      "license": "MIT",
+      "repo": "example/neon-drift-port",
+      "asset_pattern": "(?i)^.*arm64-v8a\\.apk$",
+      "requires_user_game": true,
+      "no_game_assets": true,
+      "source_url": "https://github.com/example/neon-drift-port",
+      "screenshots": ["https://example.com/screenshots/neon-drift-1.png"],
+      "package": "com.example.neondrift",
+      "category": "racing"
+    },
+    {
+      "id": "pixel-barge-port",
+      "name": "Pixel Barge Port (demo)",
+      "description": {
+        "es": "Port de demostración de una aventura completamente ficticia. Requiere tu propia copia del juego original. El autor no publica capturas, así que se muestra el marcador genérico.",
+        "en": "Demonstration port of a fully fictional adventure. Requires your own copy of the original game. The author has not published screenshots, so the generic marker is shown."
+      },
+      "author": { "name": "Autor de ejemplo", "contact": "https://github.com/example" },
+      "license": "Apache-2.0",
+      "repo": "example/pixel-barge-port",
+      "asset_pattern": "(?i)^.*-(arm64-v8a|universal)\\.apk$",
+      "requires_user_game": true,
+      "no_game_assets": true,
+      "source_url": "https://github.com/example/pixel-barge-port",
+      "package": "com.example.pixelbarge",
+      "category": "adventure"
+    }
+  ]
+}
