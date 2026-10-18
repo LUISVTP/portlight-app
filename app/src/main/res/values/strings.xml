@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default locale: ENGLISH. Android falls back here for any language without its own folder. -->
+    <string name="app_name">Portlight</string>
+    <string name="catalog_title">Community game ports catalog</string>
+    <string name="port_version_label">Version</string>
+    <string name="download_size">Download size: %1$s</string>
+    <string name="legal_title">Legal notice</string>
+    <string name="legal_notice_required_copy">This port requires your own copy of the original game. The app does not include or download game files.</string>
+</resources>

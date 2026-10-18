@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Español: misma lista de claves que values/strings.xml (lo comprueba el test de paridad). -->
+    <string name="app_name">Portlight</string>
+    <string name="catalog_title">Catálogo de ports de juegos de la comunidad</string>
+    <string name="port_version_label">Versión</string>
+    <string name="download_size">Tamaño de descarga: %1$s</string>
+    <string name="legal_title">Aviso legal</string>
+    <string name="legal_notice_required_copy">Este port requiere que tengas tu propia copia del juego original. La aplicación no incluye ni descarga archivos del juego.</string>
+</resources>

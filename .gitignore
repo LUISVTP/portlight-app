@@ -1,0 +1,25 @@
+# Build
+.gradle/
+build/
+captures/
+
+# Configuración local del SDK (contiene rutas del equipo; nunca se sube)
+local.properties
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Credenciales, claves y secretos — NUNCA se suben al repositorio
+*.keystore
+*.jks
+*.p12
+*.pem
+*.key
+*.gpg
+*.asc
+secrets.properties
+*.secret
+.env
+.env.*

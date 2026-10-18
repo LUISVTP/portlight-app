@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- i18n: toda cadena debe existir en values/ (en) y values-es/ (es) -->
+    <issue id="MissingTranslation" severity="error" />
+    <issue id="ExtraTranslation" severity="error" />
+    <!-- Texto visible: solo recursos; en XML. Para Compose hay detector propio (Fase 1)
+         y test de escaneo de fuentes (StringResourcesParityTest/HardcodedTextInSourcesTest). -->
+    <issue id="HardcodedText" severity="error" />
+    <issue id="SetTextI18n" severity="error" />
+    <issue id="UnusedResources" severity="warning" />
+</lint>
