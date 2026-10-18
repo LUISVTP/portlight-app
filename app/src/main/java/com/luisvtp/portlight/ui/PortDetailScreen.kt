@@ -1,5 +1,7 @@
 package com.luisvtp.portlight.ui
 
+import android.os.Build
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,6 +22,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,14 +30,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.luisvtp.portlight.R
 import com.luisvtp.portlight.data.Port
 import com.luisvtp.portlight.domain.categoryStringRes
 import com.luisvtp.portlight.domain.localized
+import com.luisvtp.portlight.domain.unmetMinSdk
 import com.luisvtp.portlight.install.InstallOutcome
 
 /** Detalle del port: descripción localizada, autor, licencia, repo, aviso de copia propia y descarga (Fase 2B). */
@@ -75,8 +82,9 @@ fun PortDetailScreen(
             port.description.localized(locale)?.let {
                 Text(it, style = MaterialTheme.typography.bodyLarge)
             }
+            // Línea de créditos (Fase 4): enlaza al repositorio original del port.
+            CreditsRow(port = port)
             DetailRow(label = stringResource(R.string.port_category), value = port.category?.let { stringResource(categoryStringRes(it)) } ?: stringResource(R.string.category_other))
-            DetailRow(label = stringResource(R.string.port_author), value = port.author.name)
             DetailRow(label = stringResource(R.string.port_license), value = port.license)
             DetailRow(label = stringResource(R.string.port_repo), value = port.repo)
             port.release?.let { release ->
@@ -85,6 +93,46 @@ fun PortDetailScreen(
                     value = release.tag,
                 )
             }
+
+            // Juego que la persona usuaria debe aportar (Fase 4)
+            port.requiredGame?.let { game ->
+                OutlinedCard {
+                    Column(
+                        Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.required_game_title),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            stringResource(R.string.required_game_info, game.title, game.gameId, game.revision),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+            }
+
+            // Avisos de compatibilidad publicados por el autor del port (Fase 4)
+            port.notes?.localized(locale)?.let { notes ->
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    ),
+                ) {
+                    Row(
+                        Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(Icons.Default.Warning, contentDescription = stringResource(R.string.warning_cd))
+                        Spacer(Modifier.size(8.dp))
+                        Text(notes, style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+            }
+
+            // El port puede exigir una versión de Android superior a la del dispositivo
+            SdkRequirementWarning(minSdkPort = port.minSdkPort)
 
             // Aviso obligatorio de copia propia (política del catálogo)
             Card(
@@ -158,6 +206,50 @@ private fun DetailRow(label: String, value: String, modifier: Modifier = Modifie
     }
 }
 
+/** «Port de {autor}» / «Port by {author}», enlazado al repositorio original (Fase 4). */
+@Composable
+private fun CreditsRow(port: Port, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    Column(modifier.fillMaxWidth()) {
+        Text(stringResource(R.string.port_author), style = MaterialTheme.typography.labelMedium)
+        Text(
+            stringResource(R.string.port_credits, port.author.name),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            textDecoration = TextDecoration.Underline,
+            modifier = Modifier.clickable { uriHandler.openUri(port.sourceUrl) },
+        )
+    }
+}
+
+/** Aviso si el dispositivo queda por debajo del `min_sdk_port` del port (Fase 4). */
+@Composable
+private fun SdkRequirementWarning(
+    minSdkPort: Int?,
+    sdkInt: Int = Build.VERSION.SDK_INT,
+    modifier: Modifier = Modifier,
+) {
+    val unmet = unmetMinSdk(sdkInt, minSdkPort) ?: return
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        ),
+    ) {
+        Row(
+            Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(Icons.Default.Warning, contentDescription = stringResource(R.string.warning_cd))
+            Spacer(Modifier.size(8.dp))
+            Text(
+                stringResource(R.string.port_sdk_warning_below, sdkInt, unmet),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
+
 @Preview(name = "ES", locale = "es")
 @Preview(name = "EN", locale = "en")
 @Composable
@@ -172,5 +264,14 @@ private fun PortDetailScreenPreview() {
 private fun PortDetailWithoutScreenshotsPreview() {
     MaterialTheme {
         PortDetailScreen(port = PreviewData.ports.last(), onBack = {})
+    }
+}
+
+@Preview(name = "ES aviso de SDK", locale = "es")
+@Preview(name = "EN SDK warning", locale = "en")
+@Composable
+private fun SdkRequirementWarningPreview() {
+    MaterialTheme {
+        SdkRequirementWarning(minSdkPort = 34, sdkInt = 29)
     }
 }

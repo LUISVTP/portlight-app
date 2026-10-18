@@ -5,10 +5,12 @@ import com.luisvtp.portlight.data.LocalizedText
 import com.luisvtp.portlight.data.Port
 import com.luisvtp.portlight.data.Release
 import com.luisvtp.portlight.data.ReleaseAsset
+import com.luisvtp.portlight.data.RequiredGame
 
 /**
  * Datos ficticios para previews y tests. No corresponden a ningún juego ni
- * repositorio real (mismos ejemplos que res/raw/catalog.json).
+ * repositorio real: eran las entradas del antiguo catálogo embebido, que en la
+ * Fase 4 pasó a res/raw/catalog.json con el catálogo real publicado.
  */
 object PreviewData {
 
@@ -28,6 +30,12 @@ object PreviewData {
             screenshots = listOf("https://example.com/screenshots/cubiq-quest-1.png"),
             packageName = "com.example.cubiqquest",
             category = "puzzle",
+            minSdkPort = 26,
+            requiredGame = RequiredGame("Cubiq Quest", "CQDE01", 0),
+            notes = LocalizedText(
+                es = "Aviso ficticio: requiere Vulkan 1.1 (solo para previsualizar el recuadro de avisos).",
+                en = "Fictional warning: requires Vulkan 1.1 (only to preview the notes card).",
+            ),
             release = Release(
                 tag = "v1.0.0",
                 assets = listOf(
@@ -55,6 +63,8 @@ object PreviewData {
             screenshots = listOf("https://example.com/screenshots/neon-drift-1.png"),
             packageName = "com.example.neondrift",
             category = "racing",
+            // Solo idioma español: ejercita el alternado de idiomas del catálogo.
+            notes = LocalizedText(es = "Aviso ficticio solo en español para el alternado."),
             release = Release(
                 tag = "v1.2",
                 assets = listOf(
@@ -82,6 +92,9 @@ object PreviewData {
             sourceUrl = "https://github.com/example/pixel-barge-port",
             packageName = "com.example.pixelbarge",
             category = "adventure",
+            // Mínimo alto a propósito: en la preview se ve el aviso de SDK.
+            minSdkPort = 31,
+            requiredGame = RequiredGame("Pixel Barge", "PXBG01", 2),
             release = Release(
                 tag = "v2.0.0",
                 assets = listOf(
