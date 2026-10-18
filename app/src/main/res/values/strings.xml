@@ -2,9 +2,39 @@
 <resources>
     <!-- Default locale: ENGLISH. Android falls back here for any language without its own folder. -->
     <string name="app_name">Portlight</string>
+
+    <!-- Catálogo -->
     <string name="catalog_title">Community game ports catalog</string>
+    <string name="catalog_search_hint">Search ports</string>
+    <string name="catalog_empty">No ports match your search.</string>
+
+    <!-- Categorías (token canónico del catálogo → recurso) -->
+    <string name="category_all">All</string>
+    <string name="category_action">Action</string>
+    <string name="category_racing">Racing</string>
+    <string name="category_rpg">RPG</string>
+    <string name="category_strategy">Strategy</string>
+    <string name="category_puzzle">Puzzle</string>
+    <string name="category_adventure">Adventure</string>
+    <string name="category_simulation">Simulation</string>
+    <string name="category_other">Other</string>
+
+    <!-- Detalle del port -->
+    <string name="port_author">Author</string>
+    <string name="port_license">License</string>
+    <string name="port_repo">Repository</string>
+    <string name="port_category">Category</string>
     <string name="port_version_label">Version</string>
     <string name="download_size">Download size: %1$s</string>
+    <string name="port_screenshots_none">The author has not published screenshots.</string>
+    <string name="screenshot_marker_cd">Generic screenshot placeholder</string>
+
+    <!-- Navegación -->
+    <string name="nav_back">Back</string>
+    <string name="nav_legal">Legal information</string>
+
+    <!-- Aviso legal (texto aprobado) -->
     <string name="legal_title">Legal notice</string>
+    <string name="legal_body">This app is an independent catalog of unofficial community-made "ports" (adaptations) of games for Android. It is not affiliated with, sponsored by, or endorsed by any game developer or publisher.\n\nThis app does not host, copy, or distribute APK files. Every download is performed directly from the port\'s original GitHub repository, as shown on its listing. APKs come from third parties; their code, safety, and behavior are not the responsibility of this app. Use them at your own risk and always verify the linked source.\n\nAll of the ports listed require you to own your own legitimate copy of the original game. Ports whose APK contains files from the original game are neither accepted nor published: those files are not the property of the port authors or of this app. It is your responsibility to own a legal copy of the game.\n\nTrademarks and game content belong to their respective owners. If you are a rights holder and believe any listing infringes your rights, contact us and we will remove it.</string>
     <string name="legal_notice_required_copy">This port requires your own copy of the original game. The app does not include or download game files.</string>
 </resources>
