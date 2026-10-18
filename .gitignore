@@ -12,6 +12,7 @@ local.properties
 .DS_Store
 
 # Credenciales, claves y secretos — NUNCA se suben al repositorio
+keystore.properties
 *.keystore
 *.jks
 *.p12
@@ -23,3 +24,4 @@ secrets.properties
 *.secret
 .env
 .env.*
+*.apk
