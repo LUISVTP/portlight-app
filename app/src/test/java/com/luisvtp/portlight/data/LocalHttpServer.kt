@@ -6,6 +6,7 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Servidor HTTP local mínimo para pruebas: sockets sobre 127.0.0.1, sin
@@ -29,9 +30,13 @@ internal class LocalHttpServer {
     )
 
     private val routes = ConcurrentHashMap<String, (Request) -> Response>()
+    private val requestCounter = AtomicInteger()
     private val pool = Executors.newCachedThreadPool { runnable ->
         Thread(runnable, "local-http-test").apply { isDaemon = true }
     }
+
+    /** Peticiones recibidas (para pruebas que exigen no contactar el servidor). */
+    fun requestCount(): Int = requestCounter.get()
 
     @Volatile
     private var running = false
@@ -78,6 +83,7 @@ internal class LocalHttpServer {
             socket.use { s ->
                 s.soTimeout = 5_000
                 val request = readRequest(s) ?: return
+                requestCounter.incrementAndGet()
                 val response = routes[request.path()]?.invoke(request) ?: Response(404)
                 writeResponse(s, response)
             }
