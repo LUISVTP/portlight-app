@@ -52,5 +52,7 @@ dependencies {
     testImplementation(libs.junit)
 
     // Detector Lint propio (texto hardcodeado en Compose), severidad error
-    lintPublish(project(":lint-rules"))
+    // Checks propios ejecutados por el lint de este módulo. (lintPublish solo
+    // empaqueta checks en AARs publicados, algo propio de módulos librería.)
+    lintChecks(project(":lint-rules"))
 }
