@@ -8,6 +8,13 @@
     <string name="catalog_search_hint">Buscar ports</string>
     <string name="catalog_empty">Ningún port coincide con tu búsqueda.</string>
 
+    <!-- Refresco del catálogo (Fase 2A) -->
+    <string name="catalog_refresh_action">Actualizar catálogo</string>
+    <string name="catalog_refresh_updating">Actualizando el catálogo…</string>
+    <string name="catalog_refresh_updated">Catálogo actualizado.</string>
+    <string name="catalog_refresh_not_modified">El catálogo ya está actualizado.</string>
+    <string name="catalog_refresh_failed">No se pudo actualizar el catálogo. Se mantiene el actual.</string>
+
     <!-- Categorías (token canónico del catálogo → recurso) -->
     <string name="category_all">Todas</string>
     <string name="category_action">Acción</string>

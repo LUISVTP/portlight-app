@@ -20,7 +20,11 @@ private object Routes {
 
 /** Raíz de la app: navegación entre catálogo, detalle y aviso legal. */
 @Composable
-fun PortlightApp(catalog: Catalog) {
+fun PortlightApp(
+    catalog: Catalog,
+    refreshState: CatalogRefreshState = CatalogRefreshState.IDLE,
+    onRefresh: () -> Unit = {},
+) {
     MaterialTheme {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = Routes.CATALOG) {
@@ -29,6 +33,8 @@ fun PortlightApp(catalog: Catalog) {
                     ports = catalog.ports,
                     onPortClick = { portId -> navController.navigate(Routes.portDetail(portId)) },
                     onLegalClick = { navController.navigate(Routes.LEGAL) },
+                    refreshState = refreshState,
+                    onRefreshClick = onRefresh,
                 )
             }
             composable(

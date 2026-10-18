@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +42,8 @@ import java.util.Locale
 
 /**
  * Lista del catálogo con buscador por nombre/descripción y filtro por categoría.
- * Estado interno (consulta y categoría) — sin red: Fase 1 con catálogo embebido.
+ * Estado interno (consulta y categoría); el refresco remoto lo gestiona la
+ * actividad (Fase 2A: red, caché y revalidación ETag).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +52,8 @@ fun CatalogListScreen(
     onPortClick: (String) -> Unit,
     onLegalClick: () -> Unit,
     modifier: Modifier = Modifier,
+    refreshState: CatalogRefreshState = CatalogRefreshState.IDLE,
+    onRefreshClick: () -> Unit = {},
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     // "" = todas las categorías (sentinela compatible con rememberSaveable)
@@ -71,6 +75,12 @@ fun CatalogListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.catalog_title)) },
                 actions = {
+                    IconButton(onClick = onRefreshClick) {
+                        Icon(
+                            Icons.Default.Refresh,
+                            contentDescription = stringResource(R.string.catalog_refresh_action),
+                        )
+                    }
                     IconButton(onClick = onLegalClick) {
                         Icon(
                             Icons.Default.Info,
@@ -112,6 +122,22 @@ fun CatalogListScreen(
                         label = { Text(stringResource(categoryStringRes(category))) },
                     )
                 }
+            }
+            val refreshMessage = when (refreshState) {
+                CatalogRefreshState.IDLE -> null
+                CatalogRefreshState.UPDATING -> stringResource(R.string.catalog_refresh_updating)
+                CatalogRefreshState.UPDATED -> stringResource(R.string.catalog_refresh_updated)
+                CatalogRefreshState.NOT_MODIFIED ->
+                    stringResource(R.string.catalog_refresh_not_modified)
+                CatalogRefreshState.FAILED -> stringResource(R.string.catalog_refresh_failed)
+            }
+            if (refreshMessage != null) {
+                Text(
+                    refreshMessage,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
             if (filtered.isEmpty()) {
                 Text(
