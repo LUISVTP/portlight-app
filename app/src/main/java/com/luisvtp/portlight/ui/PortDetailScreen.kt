@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.luisvtp.portlight.R
 import com.luisvtp.portlight.data.Port
 import com.luisvtp.portlight.domain.categoryStringRes
+import com.luisvtp.portlight.domain.downloadSizeBytes
+import com.luisvtp.portlight.domain.formatBytes
 import com.luisvtp.portlight.domain.localized
 import com.luisvtp.portlight.domain.unmetMinSdk
 import com.luisvtp.portlight.install.InstallOutcome
@@ -91,6 +93,14 @@ fun PortDetailScreen(
                 DetailRow(
                     label = stringResource(R.string.port_version_label),
                     value = release.tag,
+                )
+            }
+            // Tamaño del APK que se descargará (Fase 4b), con el mismo selector de ABI
+            downloadSizeBytes(port, Build.SUPPORTED_ABIS.toList())?.let { size ->
+                Text(
+                    stringResource(R.string.download_size, formatBytes(size)),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
