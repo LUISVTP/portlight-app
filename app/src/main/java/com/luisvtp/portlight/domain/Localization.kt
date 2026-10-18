@@ -24,5 +24,6 @@ fun categoryStringRes(category: String?): Int = when (category) {
     "puzzle" -> R.string.category_puzzle
     "adventure" -> R.string.category_adventure
     "simulation" -> R.string.category_simulation
+    "platformer" -> R.string.category_platformer
     else -> R.string.category_other
 }

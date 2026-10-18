@@ -24,6 +24,7 @@
     <string name="category_puzzle">Puzzle</string>
     <string name="category_adventure">Adventure</string>
     <string name="category_simulation">Simulation</string>
+    <string name="category_platformer">Platformer</string>
     <string name="category_other">Other</string>
 
     <!-- Detalle del port -->
@@ -78,4 +79,16 @@
     <string name="dialog_unknown_sources_body">Android requires you to allow \"%1$s\" to install apps before continuing. You will be taken to the system setting; return here afterwards.</string>
     <string name="action_continue">Continue</string>
     <string name="action_cancel">Cancel</string>
+
+    <!-- Fase 4: datos nuevos del catálogo en el detalle, el diálogo y la pantalla legal -->
+    <string name="port_credits">Port by %1$s</string>
+    <string name="required_game_title">Required game</string>
+    <string name="required_game_info">%1$s · ID %2$s · revision %3$d</string>
+    <string name="warning_cd">Warning</string>
+    <string name="port_sdk_warning_below">This port requires Android %2$d or newer; this device runs Android %1$d. It may not work.</string>
+    <string name="download_wifi_recommendation">A Wi-Fi connection is recommended for this download.</string>
+    <string name="legal_credits_title">Credits</string>
+    <string name="legal_credits_intro">The ports listed in this catalog are the work of their authors. Each APK is downloaded from the original repository of its port:</string>
+    <string name="legal_credit_line">\"%1$s\" — %2$s · %3$s</string>
+    <string name="legal_not_affiliated">Not affiliated with Nintendo.</string>
 </resources>
