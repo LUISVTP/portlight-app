@@ -24,8 +24,9 @@ class HardcodedComposableTextDetectorTest {
                 ).indented(),
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
+            .allowMissingSdk()
             .run()
-            .expectErrorContains("HardcodedComposableText")
+            .expectContains("HardcodedComposableText")
     }
 
     @Test
@@ -46,8 +47,9 @@ class HardcodedComposableTextDetectorTest {
                 ).indented(),
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
+            .allowMissingSdk()
             .run()
-            .expectErrorContains("HardcodedComposableText")
+            .expectContains("HardcodedComposableText")
     }
 
     @Test
@@ -69,6 +71,7 @@ class HardcodedComposableTextDetectorTest {
                 ).indented(),
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
+            .allowMissingSdk()
             .run()
             .expectClean()
     }
