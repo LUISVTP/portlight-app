@@ -106,7 +106,7 @@ fun PortDetailScreen(
                             style = MaterialTheme.typography.titleSmall,
                         )
                         Text(
-                            stringResource(R.string.required_game_info, game.title, game.gameId, game.revision),
+                            stringResource(R.string.required_game_info, game.gameTitle, game.gameId, game.revision),
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }

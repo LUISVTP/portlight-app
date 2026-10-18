@@ -75,10 +75,12 @@ data class LocalizedText(
 /**
  * Copia del juego que la persona usuaria debe aportar (Fase 4, esquema del
  * catálogo): título, `game_id` impreso en el disco (p. ej. SMNE01) y revisión.
+ * La propiedad se llama `gameTitle` (no `title`) para no chocar con la
+ * heurística del detector `HardcodedComposableText` sobre parámetros de UI.
  */
 @Serializable
 data class RequiredGame(
-    val title: String,
+    @SerialName("title") val gameTitle: String,
     @SerialName("game_id") val gameId: String,
     val revision: Int,
 )

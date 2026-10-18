@@ -70,7 +70,7 @@ object CatalogJson {
 
     /** `required_game`: título e id no vacíos y revisión entera no negativa. */
     private fun RequiredGame.satisfiesSchema(): Boolean =
-        title.isNotBlank() && gameId.isNotBlank() && revision >= 0
+        gameTitle.isNotBlank() && gameId.isNotBlank() && revision >= 0
 
     /** La release es opcional; si está, tag y assets deben ser descargables. */
     private fun Release.satisfiesSchema(repo: String): Boolean =

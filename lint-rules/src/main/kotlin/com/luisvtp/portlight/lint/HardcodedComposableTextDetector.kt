@@ -30,6 +30,11 @@ import org.jetbrains.uast.expressions.UInjectionHost
  *  - No marca: cadenas vacías, de solo espacios o de solo símbolos (sin ninguna
  *    letra ni dígito), interpolaciones totalmente dinámicas (p. ej. `"$nombre"`)
  *    y otros parámetros (p. ej. `testTag`).
+ *  - Falso positivo conocido: los argumentos con nombre se resuelven contra la
+ *    función destino, así que un modelo de datos con parámetro `title` (p. ej.
+ *    `RequiredGame`) dispararía el detector si se construyera con un literal en
+ *    código principal. En esos casos nombra la propiedad distinto (p. ej.
+ *    `gameTitle` con @SerialName("title")).
  *
  * Detección estructural (sin mirar el texto fuente): en Kotlin un literal de cadena
  * no es un [ULiteralExpression] sino una plantilla
