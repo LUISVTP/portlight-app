@@ -1,105 +1,52 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T00:00:00Z",
+  "generated_at": "2026-10-18T16:41:50Z",
   "ports": [
     {
-      "id": "cubiq-quest-port",
-      "name": "Cubiq Quest Port (demo)",
+      "id": "nsmbw-recomp",
+      "name": "NSMB Wii Multiplayer (Recompilación)",
       "description": {
-        "es": "Port de demostración de un puzzle completamente ficticio. Requiere tu propia copia del juego original. Esta entrada no corresponde a ningún juego ni repositorio real.",
-        "en": "Demonstration port of a fully fictional puzzle game. Requires your own copy of the original game. This entry does not correspond to any real game or repository."
+        "es": "Recompilación estática nativa de New Super Mario Bros. Wii para teléfonos Android (arm64, Vulkan). Sin emulador ni JIT en tiempo de ejecución: el código de la consola se compila a código nativo. Multijugador por Wi-Fi local y Tailscale. Requiere importar los archivos de tu propia copia del juego dentro de la app.",
+        "en": "Native static recompilation of New Super Mario Bros. Wii for Android phones (arm64, Vulkan). No emulator and no JIT at runtime: the console code is compiled to native code. Multiplayer over local Wi-Fi and Tailscale. Requires importing the game data from your own copy of the game inside the app."
       },
-      "author": { "name": "Autor de ejemplo", "contact": "https://github.com/example" },
+      "author": {
+        "name": "WitherBlitz",
+        "contact": "https://github.com/WitherBlitz"
+      },
       "license": "GPL-3.0-only",
-      "repo": "example/cubiq-quest-port",
-      "asset_pattern": "(?i)^.*-universal\\.apk$",
+      "repo": "WitherBlitz/NSMB-Wii-Multiplayer-Recompilation",
+      "asset_pattern": "^NSMBW-.*-android-arm64\\.apk$",
       "requires_user_game": true,
       "no_game_assets": true,
-      "source_url": "https://github.com/example/cubiq-quest-port",
-      "screenshots": ["https://example.com/screenshots/cubiq-quest-1.png"],
-      "package": "com.example.cubiqquest",
-      "category": "puzzle",
-      "release": {
-        "tag": "v1.0.0",
-        "published_at": "2026-10-10T12:00:00Z",
-        "source_url_release": "https://github.com/example/cubiq-quest-port/releases/tag/v1.0.0",
-        "assets": [
-          {
-            "name": "cubiq-quest-v1.0.0-universal.apk",
-            "size": 10485760,
-            "url": "https://github.com/example/cubiq-quest-port/releases/download/v1.0.0/cubiq-quest-v1.0.0-universal.apk",
-            "digest": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-            "abi": "universal"
-          }
-        ]
-      }
-    },
-    {
-      "id": "neon-drift-port",
-      "name": "Neon Drift Port (demo)",
-      "description": {
-        "es": "Port de demostración de una carrera completamente ficticia. Requiere tu propia copia del juego original. Esta entrada solo tiene versión en español para demostrar el alternado de idiomas del catálogo."
+      "source_url": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation",
+      "package": "com.wither.nsmbw",
+      "category": "platformer",
+      "min_sdk_port": 30,
+      "required_game": {
+        "title": "New Super Mario Bros. Wii (USA)",
+        "game_id": "SMNE01",
+        "revision": 1
       },
-      "author": { "name": "Autora de ejemplo" },
-      "license": "MIT",
-      "repo": "example/neon-drift-port",
-      "asset_pattern": "(?i)^.*arm64-v8a\\.apk$",
-      "requires_user_game": true,
-      "no_game_assets": true,
-      "source_url": "https://github.com/example/neon-drift-port",
-      "screenshots": ["https://example.com/screenshots/neon-drift-1.png"],
-      "package": "com.example.neondrift",
-      "category": "racing",
+      "notes": {
+        "es": "Sin probar en GPUs Mali (casi todos los equipos MediaTek, Samsung Exynos y Google Tensor). Adreno necesitó workarounds de sus compiladores de shaders (Gráficos > Compatibilidad gráfica); Mali puede necesitar los suyos. Si lo pruebas, abre un issue en el repositorio del port con lo que veas.",
+        "en": "Untested on Mali GPUs (most MediaTek, Samsung Exynos and Google Tensor chips). Adreno needed workarounds for its shader compilers (Display > Graphics Compatibility); Mali may need its own. If you try one, please open an issue on the port's repository with what you see."
+      },
+      "status": "active",
       "release": {
-        "tag": "v1.2",
-        "published_at": "2026-10-11T09:30:00Z",
+        "tag": "v0.1.1",
+        "source_url_release": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation/releases/tag/v0.1.1",
         "assets": [
           {
-            "name": "neon-drift-v1.2-arm64-v8a.apk",
-            "size": 15728640,
-            "url": "https://github.com/example/neon-drift-port/releases/download/v1.2/neon-drift-v1.2-arm64-v8a.apk",
+            "name": "NSMBW-0.1.1-android-arm64.apk",
+            "size": 132558444,
+            "url": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation/releases/download/v0.1.1/NSMBW-0.1.1-android-arm64.apk",
+            "digest": "sha256:a4273dceff7d3c6e74599921954a1db3b8d59653284a4295e10c5d5754e6239e",
             "abi": "arm64-v8a"
           }
-        ]
-      }
-    },
-    {
-      "id": "pixel-barge-port",
-      "name": "Pixel Barge Port (demo)",
-      "description": {
-        "es": "Port de demostración de una aventura completamente ficticia. Requiere tu propia copia del juego original. El autor no publica capturas, así que se muestra el marcador genérico.",
-        "en": "Demonstration port of a fully fictional adventure. Requires your own copy of the original game. The author has not published screenshots, so the generic marker is shown."
+        ],
+        "published_at": "2026-10-14T00:12:09Z"
       },
-      "author": { "name": "Autor de ejemplo", "contact": "https://github.com/example" },
-      "license": "Apache-2.0",
-      "repo": "example/pixel-barge-port",
-      "asset_pattern": "(?i)^.*-(arm64-v8a|universal)\\.apk$",
-      "requires_user_game": true,
-      "no_game_assets": true,
-      "source_url": "https://github.com/example/pixel-barge-port",
-      "package": "com.example.pixelbarge",
-      "category": "adventure",
-      "release": {
-        "tag": "v2.0.0",
-        "published_at": "2026-10-12T18:00:00Z",
-        "source_url_release": "https://github.com/example/pixel-barge-port/releases/tag/v2.0.0",
-        "assets": [
-          {
-            "name": "pixel-barge-v2.0.0-arm64-v8a.apk",
-            "size": 12582912,
-            "url": "https://github.com/example/pixel-barge-port/releases/download/v2.0.0/pixel-barge-v2.0.0-arm64-v8a.apk",
-            "digest": "sha256:deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
-            "abi": "arm64-v8a"
-          },
-          {
-            "name": "pixel-barge-v2.0.0-universal.apk",
-            "size": 20971520,
-            "url": "https://github.com/example/pixel-barge-port/releases/download/v2.0.0/pixel-barge-v2.0.0-universal.apk",
-            "digest": "sha256:feedfacefeedfacefeedfacefeedfacefeedfacefeedfacefeedfacefeedface",
-            "abi": "universal"
-          }
-        ]
-      }
+      "last_checked": "2026-10-18T16:41:50Z"
     }
   ]
 }
