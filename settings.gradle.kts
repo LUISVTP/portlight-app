@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Portlight"
 include(":app")
+include(":lint-rules")
