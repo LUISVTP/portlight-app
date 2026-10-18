@@ -13,8 +13,14 @@ object CatalogJson {
 
     private val SUPPORTED_SCHEMA_VERSIONS = setOf(1)
 
+    /** PLAN §4: `id` del port, `[a-z0-9][a-z0-9-]{2,63}` (también protege el nombre de fichero de descarga). */
+    private val ID_PATTERN = Regex("[a-z0-9][a-z0-9-]{2,63}")
+
     /** PLAN §4: `repo` es `owner/nombre`, la única fuente del APK. */
     private val REPO_PATTERN = Regex("[A-Za-z0-9._-]+/[A-Za-z0-9._-]+")
+
+    /** PLAN §4/§9: digest SHA-256 con prefijo (`sha256:<hex64>`), como el de GitHub. */
+    private val DIGEST_PATTERN = Regex("sha256:[0-9a-fA-F]{64}")
 
     private val format = Json {
         ignoreUnknownKeys = true
@@ -40,7 +46,7 @@ object CatalogJson {
     private fun Port.satisfiesSchema(): Boolean {
         val hasLanguage = description.en?.isNotBlank() == true ||
             description.es?.isNotBlank() == true
-        return id.isNotBlank() &&
+        return id.matches(ID_PATTERN) &&
             name.isNotBlank() &&
             hasLanguage &&
             author.name.isNotBlank() &&
@@ -48,8 +54,22 @@ object CatalogJson {
             isValidRepo(repo) &&
             sourceUrl.startsWith("https://") &&
             requiresUserGame &&
-            noGameAssets
+            noGameAssets &&
+            (release?.satisfiesSchema(repo) ?: true)
     }
+
+    /** La release es opcional; si está, tag y assets deben ser descargables. */
+    private fun Release.satisfiesSchema(repo: String): Boolean =
+        tag.isNotBlank() &&
+            (sourceUrlRelease == null || sourceUrlRelease.startsWith("https://")) &&
+            assets.all { it.satisfiesSchema(repo, tag) }
+
+    private fun ReleaseAsset.satisfiesSchema(repo: String, tag: String): Boolean =
+        name.isNotBlank() &&
+            size >= 0 &&
+            (digest == null || DIGEST_PATTERN.matches(digest)) &&
+            (abi == null || abi.isNotBlank()) &&
+            DownloadUrls.matchesReleaseUrl(url, repo, tag, name)
 
     /** `owner/nombre` con segmentos simples; sin rutas, puntos ni trucos. */
     private fun isValidRepo(repo: String): Boolean {

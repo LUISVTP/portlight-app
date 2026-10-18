@@ -106,7 +106,108 @@ class CatalogJsonTest {
         )
     }
 
+    @Test
+    fun `acepta un port con release valida`() {
+        val catalog = CatalogJson.parseOrNull(withRelease(VALID_RELEASE))
+        assertNotNull(catalog)
+        assertEquals("v1.0.0", catalog!!.ports.single().release!!.tag)
+    }
+
+    @Test
+    fun `descarta un id con formato invalido`() {
+        assertNull(
+            CatalogJson.parseOrNull(VALID_CATALOG.replace("\"id\":\"demo\"", "\"id\":\"ab\"")),
+        )
+        assertNull(
+            CatalogJson.parseOrNull(VALID_CATALOG.replace("\"id\":\"demo\"", "\"id\":\"Demo\"")),
+        )
+    }
+
+    @Test
+    fun `descarta release con digest malformado`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withRelease(VALID_RELEASE.replace(DIGEST, "\"digest\":\"sha256:zz\"")),
+            ),
+        )
+        assertNull(
+            CatalogJson.parseOrNull(
+                withRelease(VALID_RELEASE.replace(DIGEST, "\"digest\":\"sha1:00\"")),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta release con size negativo`() {
+        assertNull(
+            CatalogJson.parseOrNull(withRelease(VALID_RELEASE.replace("\"size\":1024", "\"size\":-1"))),
+        )
+    }
+
+    @Test
+    fun `descarta release con tag vacio`() {
+        assertNull(
+            CatalogJson.parseOrNull(withRelease(VALID_RELEASE.replace("\"tag\":\"v1.0.0\"", "\"tag\":\"\""))),
+        )
+    }
+
+    @Test
+    fun `descarta release con url de otro repo`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withRelease(
+                    VALID_RELEASE.replace(
+                        "/example/demo/releases/download/",
+                        "/example/otro-repo/releases/download/",
+                    ),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta release con url fuera de la politica`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withRelease(
+                    VALID_RELEASE.replace(
+                        "https://github.com/example/demo/releases/download/",
+                        "https://evil.example.invalid/demo/releases/download/",
+                    ),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta release con abi en blanco`() {
+        assertNull(
+            CatalogJson.parseOrNull(withRelease(VALID_RELEASE.replace("\"abi\":\"universal\"", "\"abi\":\"\""))),
+        )
+    }
+
+    private fun withRelease(releaseJson: String): String =
+        VALID_CATALOG.replace("\"category\":\"action\"", "\"category\":\"action\"," + releaseJson)
+
     private companion object {
+        /** Digest con la forma exacta de GitHub (`sha256:<hex64>`). */
+        const val DIGEST =
+            "\"digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\""
+
+        const val VALID_RELEASE =
+            "\"release\":{" +
+                "\"tag\":\"v1.0.0\"," +
+                "\"published_at\":\"2026-10-01T10:00:00Z\"," +
+                "\"source_url_release\":\"https://github.com/example/demo/releases/tag/v1.0.0\"," +
+                "\"assets\":[{" +
+                "\"name\":\"demo-v1.0.0-universal.apk\"," +
+                "\"size\":1024," +
+                "\"url\":\"https://github.com/example/demo/releases/download/v1.0.0/demo-v1.0.0-universal.apk\"," +
+                DIGEST + "," +
+                "\"abi\":\"universal\"" +
+                "}]" +
+                "}"
+
         /** Catálogo mínimo que cumple el esquema (ficticio, sin proyectos reales). */
         const val VALID_CATALOG =
             "{" +

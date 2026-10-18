@@ -32,6 +32,33 @@ data class Port(
     val category: String? = null,
     @SerialName("min_sdk_port") val minSdkPort: Int? = null,
     val status: String? = null,
+    /** Release generada por la Action (PLAN §4); null = sin release descargable. */
+    val release: Release? = null,
+    @SerialName("last_checked") val lastChecked: String? = null,
+)
+
+/** Release del repo original: tag y assets descargables (Fase 2B). */
+@Serializable
+data class Release(
+    val tag: String,
+    @SerialName("published_at") val publishedAt: String? = null,
+    @SerialName("source_url_release") val sourceUrlRelease: String? = null,
+    val assets: List<ReleaseAsset> = emptyList(),
+)
+
+/**
+ * Asset de la Release. `url` debe ser la descarga canónica de GitHub
+ * (`https://github.com/{owner}/{repo}/releases/download/...`) — la valida
+ * [DownloadUrls] contra el `repo` y el `tag` de la entrada.
+ * `digest` es `sha256:<hex64>` (assets de GitHub desde jun-2025) o null.
+ */
+@Serializable
+data class ReleaseAsset(
+    val name: String,
+    val size: Long,
+    val url: String,
+    val digest: String? = null,
+    val abi: String? = null,
 )
 
 /** Texto bilingüe del catálogo: al menos un idioma es obligatorio (esquema). */
