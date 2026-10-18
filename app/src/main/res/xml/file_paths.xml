@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Descargas temporales: solo cacheDir privada de la app (PLAN §9).
+         Nada en almacenamiento compartido. -->
+    <cache-path name="downloads" path="downloads/" />
+</paths>

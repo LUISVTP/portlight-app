@@ -42,6 +42,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
+    // Fase 2B: FileProvider + ContextCompat.registerReceiver (instalación de APKs).
+    implementation(libs.core.ktx)
     implementation(libs.ui)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)

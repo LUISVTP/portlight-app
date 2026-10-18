@@ -5,6 +5,7 @@ junit = "4.13.2"
 composeBom = "2024.09.03"
 activityCompose = "1.9.2"
 navigationCompose = "2.8.1"
+coreKtx = "1.13.1"
 kotlinxSerialization = "1.7.3"
 lintApi = "31.5.2"
 
@@ -13,6 +14,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
