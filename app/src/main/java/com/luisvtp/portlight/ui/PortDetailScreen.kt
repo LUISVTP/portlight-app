@@ -70,7 +70,7 @@ fun PortDetailScreen(
             port.description.localized(locale)?.let {
                 Text(it, style = MaterialTheme.typography.bodyLarge)
             }
-            DetailRow(label = stringResource(R.string.port_category), value = port.category?.let { stringResource(categoryStringRes(it)) })
+            DetailRow(label = stringResource(R.string.port_category), value = port.category?.let { stringResource(categoryStringRes(it)) } ?: stringResource(R.string.category_other))
             DetailRow(label = stringResource(R.string.port_author), value = port.author.name)
             DetailRow(label = stringResource(R.string.port_license), value = port.license)
             DetailRow(label = stringResource(R.string.port_repo), value = port.repo)
