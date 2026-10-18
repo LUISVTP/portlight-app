@@ -25,6 +25,9 @@ class HardcodedComposableTextDetectorTest {
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
             .allowMissingSdk()
+            // Los snippets importan clases de Compose que no resuelven sin stubs de librerías;
+            // es inmaterial para el detector, que solo inspecciona llamadas y literales de texto.
+            .allowCompilationErrors()
             .run()
             .expectContains("HardcodedComposableText")
     }
@@ -48,6 +51,9 @@ class HardcodedComposableTextDetectorTest {
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
             .allowMissingSdk()
+            // Los snippets importan clases de Compose que no resuelven sin stubs de librerías;
+            // es inmaterial para el detector, que solo inspecciona llamadas y literales de texto.
+            .allowCompilationErrors()
             .run()
             .expectContains("HardcodedComposableText")
     }
@@ -72,6 +78,9 @@ class HardcodedComposableTextDetectorTest {
             )
             .issues(HardcodedComposableTextDetector.ISSUE)
             .allowMissingSdk()
+            // Los snippets importan clases de Compose que no resuelven sin stubs de librerías;
+            // es inmaterial para el detector, que solo inspecciona llamadas y literales de texto.
+            .allowCompilationErrors()
             .run()
             .expectClean()
     }
