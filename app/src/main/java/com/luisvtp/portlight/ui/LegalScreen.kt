@@ -73,6 +73,11 @@ fun LegalScreen(
                 stringResource(R.string.legal_body),
                 style = MaterialTheme.typography.bodyMedium,
             )
+            // Canal de retiradas vía Issues del repo (Fase 4b)
+            Text(
+                stringResource(R.string.legal_takedown),
+                style = MaterialTheme.typography.bodyMedium,
+            )
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
