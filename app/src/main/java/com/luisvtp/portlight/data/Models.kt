@@ -31,6 +31,10 @@ data class Port(
     @SerialName("package") val packageName: String? = null,
     val category: String? = null,
     @SerialName("min_sdk_port") val minSdkPort: Int? = null,
+    /** Juego que la persona usuaria debe aportar (opcional, Fase 4). */
+    @SerialName("required_game") val requiredGame: RequiredGame? = null,
+    /** Avisos de compatibilidad bilingües del port (opcional, Fase 4). */
+    val notes: LocalizedText? = null,
     val status: String? = null,
     /** Release generada por la Action (PLAN §4); null = sin release descargable. */
     val release: Release? = null,
@@ -66,6 +70,17 @@ data class ReleaseAsset(
 data class LocalizedText(
     val es: String? = null,
     val en: String? = null,
+)
+
+/**
+ * Copia del juego que la persona usuaria debe aportar (Fase 4, esquema del
+ * catálogo): título, `game_id` impreso en el disco (p. ej. SMNE01) y revisión.
+ */
+@Serializable
+data class RequiredGame(
+    val title: String,
+    @SerialName("game_id") val gameId: String,
+    val revision: Int,
 )
 
 @Serializable

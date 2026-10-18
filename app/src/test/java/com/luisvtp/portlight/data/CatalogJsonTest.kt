@@ -186,8 +186,86 @@ class CatalogJsonTest {
         )
     }
 
+    @Test
+    fun `acepta campos desconocidos sin descartar el catalogo`() {
+        // ignoreUnknownKeys: campos de futuras versiones no rompen la app.
+        val catalog = CatalogJson.parseOrNull(
+            VALID_CATALOG.replace("\"category\":\"action\"", "\"category\":\"action\",\"campo_futuro\":1"),
+        )
+        assertNotNull(catalog)
+    }
+
+    @Test
+    fun `acepta un port sin los opcionales nuevos`() {
+        val catalog = CatalogJson.parseOrNull(VALID_CATALOG)
+        assertNotNull(catalog)
+        val port = catalog!!.ports.single()
+        assertNull(port.requiredGame)
+        assertNull(port.notes)
+        assertNull(port.minSdkPort)
+    }
+
+    @Test
+    fun `acepta y parsea required_game notes y min_sdk_port`() {
+        val catalog = CatalogJson.parseOrNull(withExtra(OPTIONAL_FIELDS))
+        assertNotNull(catalog)
+        val port = catalog!!.ports.single()
+        assertEquals(30, port.minSdkPort)
+        assertEquals(RequiredGame("Juego de ejemplo", "EXAM01", 1), port.requiredGame)
+        assertEquals("Aviso en espanol", port.notes?.es)
+        assertEquals("Warning in English", port.notes?.en)
+    }
+
+    @Test
+    fun `descarta required_game con titulo vacio`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withExtra(OPTIONAL_FIELDS.replace("\"title\":\"Juego de ejemplo\"", "\"title\":\"\"")),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta required_game con game_id en blanco`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withExtra(OPTIONAL_FIELDS.replace("\"game_id\":\"EXAM01\"", "\"game_id\":\"\"")),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta required_game con revision negativa`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withExtra(OPTIONAL_FIELDS.replace("\"revision\":1", "\"revision\":-1")),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta notes sin ningun idioma`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                withExtra(OPTIONAL_FIELDS.replace(
+                    "\"notes\":{\"es\":\"Aviso en espanol\",\"en\":\"Warning in English\"}",
+                    "\"notes\":{}",
+                )),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta min_sdk_port por debajo del soportado`() {
+        assertNull(
+            CatalogJson.parseOrNull(withExtra(OPTIONAL_FIELDS.replace("\"min_sdk_port\":30", "\"min_sdk_port\":5"))),
+        )
+    }
+
     private fun withRelease(releaseJson: String): String =
         VALID_CATALOG.replace("\"category\":\"action\"", "\"category\":\"action\"," + releaseJson)
+
+    private fun withExtra(extraJson: String): String = withRelease(extraJson)
 
     private companion object {
         /** Digest con la forma exacta de GitHub (`sha256:<hex64>`). */
@@ -227,5 +305,11 @@ class CatalogJsonTest {
                 "\"category\":\"action\"" +
                 "}]" +
                 "}"
+
+        /** Opcionales de la Fase 4: required_game, notes y min_sdk_port. */
+        const val OPTIONAL_FIELDS =
+            "\"min_sdk_port\":30," +
+                "\"required_game\":{\"title\":\"Juego de ejemplo\",\"game_id\":\"EXAM01\",\"revision\":1}," +
+                "\"notes\":{\"es\":\"Aviso en espanol\",\"en\":\"Warning in English\"}"
     }
 }

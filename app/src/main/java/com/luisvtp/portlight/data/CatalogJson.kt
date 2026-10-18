@@ -22,6 +22,9 @@ object CatalogJson {
     /** PLAN §4/§9: digest SHA-256 con prefijo (`sha256:<hex64>`), como el de GitHub. */
     private val DIGEST_PATTERN = Regex("sha256:[0-9a-fA-F]{64}")
 
+    /** El catálogo solo admite ports para Android 21+ (schema de portlight-catalog). */
+    private const val MIN_SUPPORTED_SDK = 21
+
     private val format = Json {
         ignoreUnknownKeys = true
         isLenient = false
@@ -44,8 +47,7 @@ object CatalogJson {
     }
 
     private fun Port.satisfiesSchema(): Boolean {
-        val hasLanguage = description.en?.isNotBlank() == true ||
-            description.es?.isNotBlank() == true
+        val hasLanguage = description.hasLanguage()
         return id.matches(ID_PATTERN) &&
             name.isNotBlank() &&
             hasLanguage &&
@@ -55,8 +57,20 @@ object CatalogJson {
             sourceUrl.startsWith("https://") &&
             requiresUserGame &&
             noGameAssets &&
+            // Opcionales de la Fase 4: si vienen, tienen que venir con sentido.
+            (minSdkPort == null || minSdkPort >= MIN_SUPPORTED_SDK) &&
+            (notes == null || notes.hasLanguage()) &&
+            (requiredGame == null || requiredGame.satisfiesSchema()) &&
             (release?.satisfiesSchema(repo) ?: true)
     }
+
+    /** Al menos un idioma no vacío (description y notes, Fase 4). */
+    private fun LocalizedText.hasLanguage(): Boolean =
+        en?.isNotBlank() == true || es?.isNotBlank() == true
+
+    /** `required_game`: título e id no vacíos y revisión entera no negativa. */
+    private fun RequiredGame.satisfiesSchema(): Boolean =
+        title.isNotBlank() && gameId.isNotBlank() && revision >= 0
 
     /** La release es opcional; si está, tag y assets deben ser descargables. */
     private fun Release.satisfiesSchema(repo: String): Boolean =
