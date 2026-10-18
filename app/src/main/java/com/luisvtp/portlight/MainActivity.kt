@@ -16,7 +16,10 @@ import com.luisvtp.portlight.data.CatalogRefresher
 import com.luisvtp.portlight.data.CatalogRepository
 import com.luisvtp.portlight.data.FileCatalogCacheStore
 import com.luisvtp.portlight.data.HttpUrlConnectionGateway
+import com.luisvtp.portlight.data.Port
+import com.luisvtp.portlight.install.InstallOutcome
 import com.luisvtp.portlight.ui.CatalogRefreshState
+import com.luisvtp.portlight.ui.InstallDialogs
 import com.luisvtp.portlight.ui.PortlightApp
 import java.util.concurrent.Executors
 
@@ -31,10 +34,15 @@ class MainActivity : ComponentActivity() {
         // Caché privada: filesDir de la app (no visible para otras apps).
         val cacheStore = FileCatalogCacheStore(filesDir)
         val refresher = CatalogRefresher(HttpUrlConnectionGateway(), cacheStore)
+        // Fase 2B: flujo de instalación compuesto en PortlightApplication.
+        val app = application as PortlightApplication
         setContent {
             MaterialTheme {
                 var catalog by remember { mutableStateOf(repository.currentCatalog(cacheStore)) }
                 var refreshState by remember { mutableStateOf(CatalogRefreshState.IDLE) }
+                var installBusy by remember { mutableStateOf(false) }
+                var installTargetId by remember { mutableStateOf<String?>(null) }
+                var installOutcome by remember { mutableStateOf<InstallOutcome?>(null) }
 
                 fun requestRefresh() {
                     if (refreshState == CatalogRefreshState.UPDATING) return
@@ -55,6 +63,22 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+                // Descarga+instalación en el hilo único de la aplicación; el
+                // resultado vuelve por mainHandler y se muestra en el detalle.
+                fun requestInstall(port: Port) {
+                    if (installBusy) return
+                    installBusy = true
+                    installTargetId = port.id
+                    installOutcome = null
+                    app.installExecutor.execute {
+                        val result = app.installFlow.run(port)
+                        mainHandler.post {
+                            installOutcome = result
+                            installBusy = false
+                        }
+                    }
+                }
+
                 // Refresco inicial fuera del hilo principal; el resultado vuelve
                 // por mainHandler y actualiza el estado de Compose.
                 LaunchedEffect(Unit) { requestRefresh() }
@@ -62,7 +86,13 @@ class MainActivity : ComponentActivity() {
                     catalog = catalog,
                     refreshState = refreshState,
                     onRefresh = { requestRefresh() },
+                    installBusy = installBusy,
+                    installTargetId = installTargetId,
+                    installOutcome = installOutcome,
+                    onDownloadClick = { port -> requestInstall(port) },
                 )
+                // Confirmaciones del flujo (bloquean en su hilo hasta la respuesta).
+                InstallDialogs(app.installConfirmer)
             }
         }
     }

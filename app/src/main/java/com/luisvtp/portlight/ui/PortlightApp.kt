@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.luisvtp.portlight.data.Catalog
+import com.luisvtp.portlight.data.Port
+import com.luisvtp.portlight.install.InstallOutcome
 
 private object Routes {
     const val CATALOG = "catalog"
@@ -24,6 +26,10 @@ fun PortlightApp(
     catalog: Catalog,
     refreshState: CatalogRefreshState = CatalogRefreshState.IDLE,
     onRefresh: () -> Unit = {},
+    installBusy: Boolean = false,
+    installTargetId: String? = null,
+    installOutcome: InstallOutcome? = null,
+    onDownloadClick: (Port) -> Unit = {},
 ) {
     MaterialTheme {
         val navController = rememberNavController()
@@ -44,7 +50,14 @@ fun PortlightApp(
                 val portId = backStackEntry.arguments?.getString("portId")
                 val port = catalog.ports.firstOrNull { it.id == portId }
                 if (port != null) {
-                    PortDetailScreen(port = port, onBack = { navController.popBackStack() })
+                    PortDetailScreen(
+                        port = port,
+                        onBack = { navController.popBackStack() },
+                        // El estado de descarga solo se muestra si es de ESTE port.
+                        installBusy = installBusy && installTargetId == port.id,
+                        installOutcome = if (installTargetId == port.id) installOutcome else null,
+                        onDownloadClick = { onDownloadClick(port) },
+                    )
                 } else {
                     LaunchedEffect(portId) { navController.popBackStack() }
                 }

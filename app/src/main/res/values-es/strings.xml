@@ -44,4 +44,38 @@
     <string name="legal_title">Aviso legal</string>
     <string name="legal_body">Esta aplicación es un catálogo independiente de "ports" (adaptaciones) no oficiales de juegos para Android, realizados por la comunidad. No está afiliada, patrocinada ni respaldada por ningún desarrollador ni editor de juegos.\n\nEsta aplicación no aloja, copia ni distribuye archivos APK. Cada descarga se realiza directamente desde el repositorio original del port en GitHub, indicado en su ficha. Los APK provienen de terceros; su código, seguridad y funcionamiento no son responsabilidad de esta aplicación. Úsalos bajo tu propio riesgo y verifica siempre la fuente enlazada.\n\nTodos los ports listados exigen que dispongas de una copia propia y legítima del juego original. No se admiten ni se publican ports cuyo APK contenga archivos del juego original: estos archivos no son propiedad de los autores del port ni de esta aplicación. Es tu responsabilidad poseer una copia legal del juego.\n\nLas marcas y contenidos de los juegos pertenecen a sus respectivos propietarios. Si eres titular de derechos y consideras que alguna entrada infringe tus derechos, contáctanos y la retiraremos.</string>
     <string name="legal_notice_required_copy">Este port requiere que tengas tu propia copia del juego original. La aplicación no incluye ni descarga archivos del juego.</string>
+
+    <!-- Descarga e instalación (Fase 2B) -->
+    <string name="port_download_install">Descargar e instalar</string>
+    <string name="download_in_progress">Descarga e instalación en curso. Confirma en el instalador del sistema si Android te lo pide.</string>
+    <string name="download_installed">APK instalado correctamente.</string>
+    <string name="download_cancelled">Operación cancelada. No se ha realizado ningún cambio.</string>
+    <string name="download_installer_opened">El instalador del sistema se ha abierto. Confirma allí para terminar.</string>
+
+    <!-- Resultados de la descarga/instalación -->
+    <string name="error_no_apk_asset">Este port no tiene ningún APK compatible disponible para descargar.</string>
+    <string name="error_abi_unsupported">Ninguno de los APK disponibles es compatible con este dispositivo.</string>
+    <string name="error_ambiguous_asset">El catálogo ofrece varios APK y no se pudo determinar cuál es el correcto. Hay que corregir el patrón del catálogo.</string>
+    <string name="error_url_not_allowed">La dirección de descarga no es una URL de releases de GitHub permitida. Descarga cancelada.</string>
+    <string name="error_digest_mismatch">Comprobación de integridad fallida: el archivo descargado no coincide con su suma de comprobación del catálogo. El archivo se ha borrado.</string>
+    <string name="error_size_exceeded">El archivo es mayor de lo que indica el catálogo. Descarga cancelada.</string>
+    <string name="error_redirect_blocked">La descarga intentó salir de los dominios de GitHub permitidos. Descarga cancelada.</string>
+    <string name="error_network">Error de red durante la descarga. El archivo incompleto se ha borrado.</string>
+    <string name="error_http">El repositorio devolvió un error (%1$d). Inténtalo de nuevo más tarde.</string>
+    <string name="error_apk_invalid">El archivo descargado no es un APK válido o no se pudo leer.</string>
+    <string name="error_package_mismatch">El paquete del APK no coincide con el declarado en el catálogo. El archivo se ha borrado.</string>
+    <string name="error_install_blocked">Android ha bloqueado la instalación. Permite instalar apps de esta fuente en los ajustes del sistema y vuelve a intentarlo.</string>
+    <string name="error_install_failed">El instalador del sistema falló: %1$s</string>
+
+    <!-- Confirmaciones del flujo de instalación -->
+    <string name="dialog_own_copy_title">Se requiere tu propia copia del juego</string>
+    <string name="dialog_own_copy_body">Esta descarga te lleva al repositorio original de GitHub de \"%1$s\". El APK proviene de terceros y no incluye archivos del juego: debes disponer de una copia legítima del juego original. ¿Quieres continuar?</string>
+    <string name="dialog_missing_digest_title">Sin suma de comprobación publicada</string>
+    <string name="dialog_missing_digest_body">\"%1$s\" no publica una suma de comprobación SHA-256 de esta release, así que no se puede verificar el archivo contra el catálogo. ¿Continuar bajo tu propio riesgo?</string>
+    <string name="dialog_signature_changed_title">Certificado de firma cambiado</string>
+    <string name="dialog_signature_changed_body">El APK de \"%1$s\" está firmado con un certificado distinto del usado la primera vez que se instaló. Puede ser una clave nueva legítima o un compromiso. Nueva huella: %2$s. ¿Quieres instalarlo de todos modos?</string>
+    <string name="dialog_unknown_sources_title">Permite instalar desde esta app</string>
+    <string name="dialog_unknown_sources_body">Android requiere que permitas a \"%1$s\" instalar apps antes de continuar. Se abrirá el ajuste del sistema; vuelve aquí después.</string>
+    <string name="action_continue">Continuar</string>
+    <string name="action_cancel">Cancelar</string>
 </resources>

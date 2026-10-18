@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,14 +34,18 @@ import com.luisvtp.portlight.R
 import com.luisvtp.portlight.data.Port
 import com.luisvtp.portlight.domain.categoryStringRes
 import com.luisvtp.portlight.domain.localized
+import com.luisvtp.portlight.install.InstallOutcome
 
-/** Detalle del port: descripción localizada, autor, licencia, repo y aviso de copia propia. */
+/** Detalle del port: descripción localizada, autor, licencia, repo, aviso de copia propia y descarga (Fase 2B). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PortDetailScreen(
     port: Port,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    installBusy: Boolean = false,
+    installOutcome: InstallOutcome? = null,
+    onDownloadClick: () -> Unit = {},
 ) {
     val locale = LocalConfiguration.current.locales.get(0)
 
@@ -74,6 +79,12 @@ fun PortDetailScreen(
             DetailRow(label = stringResource(R.string.port_author), value = port.author.name)
             DetailRow(label = stringResource(R.string.port_license), value = port.license)
             DetailRow(label = stringResource(R.string.port_repo), value = port.repo)
+            port.release?.let { release ->
+                DetailRow(
+                    label = stringResource(R.string.port_version_label),
+                    value = release.tag,
+                )
+            }
 
             // Aviso obligatorio de copia propia (política del catálogo)
             Card(
@@ -107,6 +118,29 @@ fun PortDetailScreen(
                     )
                     Text(
                         stringResource(R.string.port_screenshots_none),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            // Descarga e instalación (Fase 2B): solo si la release publica assets
+            if (port.release != null) {
+                Button(
+                    onClick = onDownloadClick,
+                    enabled = !installBusy,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.port_download_install))
+                }
+                val status: String? = when {
+                    installBusy -> stringResource(R.string.download_in_progress)
+                    installOutcome != null -> installOutcomeMessage(installOutcome)
+                    else -> null
+                }
+                if (status != null) {
+                    Text(
+                        status,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

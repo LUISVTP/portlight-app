@@ -18,7 +18,21 @@
       "source_url": "https://github.com/example/cubiq-quest-port",
       "screenshots": ["https://example.com/screenshots/cubiq-quest-1.png"],
       "package": "com.example.cubiqquest",
-      "category": "puzzle"
+      "category": "puzzle",
+      "release": {
+        "tag": "v1.0.0",
+        "published_at": "2026-10-10T12:00:00Z",
+        "source_url_release": "https://github.com/example/cubiq-quest-port/releases/tag/v1.0.0",
+        "assets": [
+          {
+            "name": "cubiq-quest-v1.0.0-universal.apk",
+            "size": 10485760,
+            "url": "https://github.com/example/cubiq-quest-port/releases/download/v1.0.0/cubiq-quest-v1.0.0-universal.apk",
+            "digest": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "abi": "universal"
+          }
+        ]
+      }
     },
     {
       "id": "neon-drift-port",
@@ -35,7 +49,19 @@
       "source_url": "https://github.com/example/neon-drift-port",
       "screenshots": ["https://example.com/screenshots/neon-drift-1.png"],
       "package": "com.example.neondrift",
-      "category": "racing"
+      "category": "racing",
+      "release": {
+        "tag": "v1.2",
+        "published_at": "2026-10-11T09:30:00Z",
+        "assets": [
+          {
+            "name": "neon-drift-v1.2-arm64-v8a.apk",
+            "size": 15728640,
+            "url": "https://github.com/example/neon-drift-port/releases/download/v1.2/neon-drift-v1.2-arm64-v8a.apk",
+            "abi": "arm64-v8a"
+          }
+        ]
+      }
     },
     {
       "id": "pixel-barge-port",
@@ -52,7 +78,28 @@
       "no_game_assets": true,
       "source_url": "https://github.com/example/pixel-barge-port",
       "package": "com.example.pixelbarge",
-      "category": "adventure"
+      "category": "adventure",
+      "release": {
+        "tag": "v2.0.0",
+        "published_at": "2026-10-12T18:00:00Z",
+        "source_url_release": "https://github.com/example/pixel-barge-port/releases/tag/v2.0.0",
+        "assets": [
+          {
+            "name": "pixel-barge-v2.0.0-arm64-v8a.apk",
+            "size": 12582912,
+            "url": "https://github.com/example/pixel-barge-port/releases/download/v2.0.0/pixel-barge-v2.0.0-arm64-v8a.apk",
+            "digest": "sha256:deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+            "abi": "arm64-v8a"
+          },
+          {
+            "name": "pixel-barge-v2.0.0-universal.apk",
+            "size": 20971520,
+            "url": "https://github.com/example/pixel-barge-port/releases/download/v2.0.0/pixel-barge-v2.0.0-universal.apk",
+            "digest": "sha256:feedfacefeedfacefeedfacefeedfacefeedfacefeedfacefeedfacefeedface",
+            "abi": "universal"
+          }
+        ]
+      }
     }
   ]
 }
