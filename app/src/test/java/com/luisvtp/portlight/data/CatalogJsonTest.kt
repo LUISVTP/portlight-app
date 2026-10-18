@@ -70,13 +70,31 @@ class CatalogJsonTest {
     }
 
     @Test
-    fun `descarta repos que no son https`() {
+    fun `descarta repo con forma de url en lugar de owner nombre`() {
         assertNull(
             CatalogJson.parseOrNull(
                 VALID_CATALOG.replace(
+                    "\"repo\":\"example/demo\"",
                     "\"repo\":\"https://github.com/example/demo\"",
-                    "\"repo\":\"http://github.com/example/demo\"",
                 ),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta repo con segmentos de mas`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                VALID_CATALOG.replace("\"repo\":\"example/demo\"", "\"repo\":\"example/demo/extra\""),
+            ),
+        )
+    }
+
+    @Test
+    fun `descarta repo con puntos peligrosos`() {
+        assertNull(
+            CatalogJson.parseOrNull(
+                VALID_CATALOG.replace("\"repo\":\"example/demo\"", "\"repo\":\"../demo\""),
             ),
         )
     }
@@ -100,7 +118,7 @@ class CatalogJsonTest {
                 "\"description\":{\"en\":\"Demo port\",\"es\":\"Port de demostracion\"}," +
                 "\"author\":{\"name\":\"Autor\"}," +
                 "\"license\":\"GPL-3.0\"," +
-                "\"repo\":\"https://github.com/example/demo\"," +
+                "\"repo\":\"example/demo\"," +
                 "\"asset_pattern\":\"*.apk\"," +
                 "\"requires_user_game\":true," +
                 "\"no_game_assets\":true," +

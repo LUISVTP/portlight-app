@@ -13,6 +13,9 @@ object CatalogJson {
 
     private val SUPPORTED_SCHEMA_VERSIONS = setOf(1)
 
+    /** PLAN §4: `repo` es `owner/nombre`, la única fuente del APK. */
+    private val REPO_PATTERN = Regex("[A-Za-z0-9._-]+/[A-Za-z0-9._-]+")
+
     private val format = Json {
         ignoreUnknownKeys = true
         isLenient = false
@@ -42,9 +45,17 @@ object CatalogJson {
             hasLanguage &&
             author.name.isNotBlank() &&
             license.isNotBlank() &&
-            repo.startsWith("https://") &&
+            isValidRepo(repo) &&
             sourceUrl.startsWith("https://") &&
             requiresUserGame &&
             noGameAssets
+    }
+
+    /** `owner/nombre` con segmentos simples; sin rutas, puntos ni trucos. */
+    private fun isValidRepo(repo: String): Boolean {
+        if (!REPO_PATTERN.matches(repo)) return false
+        return repo.split('/').none { seg ->
+            seg.isEmpty() || seg.startsWith(".") || seg.endsWith(".") || seg.contains("..")
+        }
     }
 }

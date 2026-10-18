@@ -193,7 +193,7 @@ class CatalogRefresherTest {
                 "\"description\":{\"en\":\"Demo port\"}," +
                 "\"author\":{\"name\":\"Autor\"}," +
                 "\"license\":\"GPL-3.0\"," +
-                "\"repo\":\"https://github.com/example/demo\"," +
+                "\"repo\":\"example/demo\"," +
                 "\"asset_pattern\":\"*.apk\"," +
                 "\"requires_user_game\":true," +
                 "\"no_game_assets\":true," +
